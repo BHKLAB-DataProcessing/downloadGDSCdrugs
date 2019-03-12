@@ -35,7 +35,7 @@ downloadGDSCdrugs <- function(path.data="/pfs/out",  path.drug = path.data){
 	  # dwl.status <- download.file(url="http://www.cancerrxgene.org/action/ExportJsonTable/CSV", destfile=file.path(path.drug, "dwl", "export-Automatically_generated_table_data.csv"), quiet=TRUE)
 	  # if(dwl.status != 0) { stop("Download failed, please rerun the pipeline!") }  
 	  tables <- read.csv("https://www.cancerrxgene.org/translation/drug_list?list=all&export=csv")
-	  drugs <- tables[1][[1]]
+	  # drugs <- tables[1][[1]]
 	  write.csv(drugs, row.names=FALSE, file=file.path(path.drug, "dwl", "export.csv"))
 	  file.copy(from=file.path(path.drug, "dwl", "export.csv"), to=myfn)
 	}
