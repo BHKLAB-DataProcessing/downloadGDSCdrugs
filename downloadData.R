@@ -1,6 +1,17 @@
 library(PharmacoGxPrivate)
 options(stringsAsFactors=FALSE)
 
+matchToIDTable <- function(ids,tbl, column, returnColumn="unique.cellid") {
+	sapply(ids, function(x) {
+                          myx <- grep(paste0("((///)|^)",Hmisc::escapeRegex(x),"((///)|$)"), tbl[,column])
+                          if(length(myx) > 1){
+                            stop("Something went wrong in curating ids, we have multiple matches")
+                          }
+			  if(length(myx) == 0){return(NA_character_)}
+                          return(tbl[myx, returnColumn])
+                        })
+}
+
 require(downloader)
 badchars <- "[\xb5]|[]|[,]|[;]|[:]|[-]|[+]|[*]|[%]|[$]|[#]|[{]|[}]|[[]|[]]|[|]|[\\^]|[/]|[\\]|[.]|[_]|[ ]"
 sessionInfo()
@@ -30,7 +41,7 @@ drug.info <- read.csv(myfn)
 drug.all <- read.csv("/pfs/downAnnotations/drugs_with_ids.csv", na.strings=c("", " ", "NA"))
 
 
-drug.info$unique.drugid <-  drug.all[match(drug.info[,"DRUG_NAME"], drug.all[,"GDSC2019.drugid"]),"unique.drugid"]
+drug.info$unique.drugid <-  matchToIDTable(ids=drug.info[,"DRUG_NAME"], tbl = drug.all, column = "GDSC2019.drugid", returnColumn = "unique.drugid")
 save(drug.info, file="/pfs/out/drugInfo.RData")
 
 
