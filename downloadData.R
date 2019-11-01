@@ -1,4 +1,4 @@
-library(PharmacoGxPrivate)
+library(PharmacoGx)
 options(stringsAsFactors=FALSE)
 
 matchToIDTable <- function(ids,tbl, column, returnColumn="unique.cellid") {
