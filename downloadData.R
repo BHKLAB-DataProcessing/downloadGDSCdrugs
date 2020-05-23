@@ -32,7 +32,7 @@ myfn2 <- file.path(my.dir, "screened_compunds_rel_8.2.csv")
 dwl.status <- download.file(url=sprintf("%s/%s",drugFileURL,drugFileName), destfile=myfn, quiet=TRUE)
 if(dwl.status != 0) { stop("Download failed, please rerun the pipeline!") }
 
-dwl.status <- download.file(url=sprintf("%s/%s",drugFileURL_8.2,drugFileName_8.2), destfile=myfn, quiet=TRUE)
+dwl.status <- download.file(url=sprintf("%s/%s",drugFileURL_8.2,drugFileName_8.2), destfile=myfn2, quiet=TRUE)
 if(dwl.status != 0) { stop("Download failed, please rerun the pipeline!") }
 
 
