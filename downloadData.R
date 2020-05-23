@@ -21,16 +21,19 @@ my.dir <- "/pfs/out"
 drugFileURL <- "ftp://ftp.sanger.ac.uk/pub/project/cancerrxgene/releases/release-8.0/"
 drugFileName <- "screened_compounds_rel_8.0.csv"
 
-
+drugFileURL_8.2 <- "ftp://ftp.sanger.ac.uk/pub/project/cancerrxgene/releases/release-8.2/"
+drugFileName_8.2 <- "screened_compunds_rel_8.2.csv"
 
 ## download sample information
 message("Download drug info")
 myfn <- file.path(my.dir, "screened_compounds_rel_8.0.csv")
+myfn2 <- file.path(my.dir, "screened_compunds_rel_8.2.csv")
 
 dwl.status <- download.file(url=sprintf("%s/%s",drugFileURL,drugFileName), destfile=myfn, quiet=TRUE)
 if(dwl.status != 0) { stop("Download failed, please rerun the pipeline!") }
 
-
+dwl.status <- download.file(url=sprintf("%s/%s",drugFileURL_8.2,drugFileName_8.2), destfile=myfn, quiet=TRUE)
+if(dwl.status != 0) { stop("Download failed, please rerun the pipeline!") }
 
 
 # require(gdata)
@@ -40,10 +43,14 @@ drug.info <- read.csv(myfn)
 
 drug.all <- read.csv("/pfs/downAnnotations/drugs_with_ids.csv", na.strings=c("", " ", "NA"))
 
-
+#ver 8.0 drug annotations (July 2019)
 drug.info$unique.drugid <-  matchToIDTable(ids=drug.info[,"DRUG_NAME"], tbl = drug.all, column = "GDSC2019.drugid", returnColumn = "unique.drugid")
 save(drug.info, file="/pfs/out/drugInfo.RData")
 
+#ver 8.2 drug annotations (Feb 2020)
+drug.info <- read.csv(myfn2)
+drug.info$unique.drugid <-  matchToIDTable(ids=drug.info[,"DRUG_NAME"], tbl = drug.all, column = "GDSC2019.drugid", returnColumn = "unique.drugid")
+save(drug.info, file="/pfs/out/drugInfo_8.2.RData")
 
 # downloadGDSCdrugs <- function(path.data="/pfs/out",  path.drug = path.data){
 # 	if(!file.exists(path.drug)){
